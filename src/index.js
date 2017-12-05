@@ -1,15 +1,32 @@
-import React from 'react';
+//create new component, generate HTML, and insert into DOM
+//downward dataflow: most parent component should fetch data
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import YTSearch from 'youtube-api-search';
 
-import App from './components/app';
-import reducers from './reducers';
+import SearchBar from './components/searchbar.js';
+import VideoList from './components/video_list.js';
+const API_KEY =  "AIzaSyCFMcZv0ISR3A_RKE_eiG-TQQQ9BmYZOrE";
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+class App extends Component{
+	constructor(props){
+		super(props);
+
+		this.state = { videos: []};
+
+		YTSearch({key: API_KEY, term: 'elsagate'}, (results) => {
+			this.setState({videos: results});
+		});
+	}
+	render(){
+		return (
+			<div>Search: 
+				<SearchBar />
+				<VideoList videos={this.state.videos} />
+			</div>
+		);
+	};
+}
+
+ReactDOM.render(<App />, document.querySelector('.container'));
