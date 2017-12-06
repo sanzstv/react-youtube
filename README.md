@@ -1,1 +1,1 @@
-React/Redux w/ YoutubeAPI starter project
+React w/ YoutubeAPI starter project
