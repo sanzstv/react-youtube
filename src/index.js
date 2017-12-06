@@ -1,5 +1,6 @@
 //create new component, generate HTML, and insert into DOM
 //downward dataflow: most parent component should fetch data
+import _ from 'lodash';
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import YTSearch from 'youtube-api-search';
@@ -19,20 +20,27 @@ class App extends Component{
 			selectedVideo: null 
 		};
 
-		YTSearch({key: API_KEY, term: 'penguinz0'}, (results) => {
+		this.videoSearch('penguinz0');
+	}
+
+	videoSearch(term) {
+		YTSearch({key: API_KEY, term: term}, (results) => {
 			this.setState({
 				videos: results,
 				selectedVideo: results[0]
 			});
-
 		});
 	}
+
 	render(){
+		//throttle search to call every 400 ms
+		const videoSearch = _.debounce((term) => {this.videoSearch(term)}, 400);
+		
 		return (
-			<div>Search: 
-				<SearchBar />
+			<div> 
+				<SearchBar onSearchTermChange={videoSearch}/>
 				<VideoDetail video={this.state.selectedVideo} />
-				<VideoList onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+				<VideoList onVi4deoSelect={selectedVideo => this.setState({selectedVideo})}
 				videos={this.state.videos} />
 			</div>
 		);
