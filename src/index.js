@@ -8,7 +8,7 @@ import YTSearch from 'youtube-api-search';
 import VideoDetail from './components/video_detail.js';
 import SearchBar from './components/searchbar.js';
 import VideoList from './components/video_list.js';
-const API_KEY =  "AIzaSyCFMcZv0ISR3A_RKE_eiG-TQQQ9BmYZOrE";
+const API_KEY =  process.env.YT_API;
 
 
 class App extends Component{
